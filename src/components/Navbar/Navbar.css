@@ -1,0 +1,12 @@
+@media (max-width: 767px) {
+  .location-search {
+    display: none;
+  }
+}
+
+@media (max-width: 458px) {
+  .main-search {
+    display: none;
+  }
+}
+
