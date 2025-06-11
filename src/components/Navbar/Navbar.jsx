@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import "./Navbar.css";
-import Logo from "../../assets/symbol.png";
+import Logo from "../../assets/olx2025.png";
 import Search from "../../assets/search1.svg";
 import Arrow from "../../assets/arrow-down.svg";
 import searchwt from "../../assets/search.svg";

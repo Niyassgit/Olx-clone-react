@@ -5,7 +5,8 @@ import { fetchFromFireStore, fireStore } from '../Firebase/Firebase';
 import uploadImageToCloudinary from '../Cloudinary/imageUpload';
 import { ProductContext } from '../Context/productContext';
 import Navbar from '../Navbar/Navbar';
-
+import Footer from '../Footer'
+import { serverTimestamp } from 'firebase/firestore';
 
 const Sell = ({ setItems ,toggleModal}) => {
   const { setProductData } = useContext(ProductContext);
@@ -43,6 +44,7 @@ const Sell = ({ setItems ,toggleModal}) => {
       category: productCategory.trim(),
       description: productDescription.trim(),
       price: parseFloat(productPrice),
+      createdAt:serverTimestamp()
     };
 
     try {
@@ -116,7 +118,8 @@ const Sell = ({ setItems ,toggleModal}) => {
       </form>
     </div>
   </div>
-</>
+  <Footer/>
+  </>
 
   );
 };

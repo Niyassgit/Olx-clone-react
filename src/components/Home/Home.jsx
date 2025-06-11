@@ -5,10 +5,11 @@ import Login from '../Login/Login';
 import Sell from '../../components/Sell/Sell';
 import Card from '../Card/Card';
 import { useItemContext } from '../Context/Item';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { fireStore } from '../Firebase/Firebase';
+import Footer from '../Footer';
 
-const Home = ({toggleModal,openModal}) => {
+const Home = ({ toggleModal, openModal }) => {
   const [addedItems, setAddedItems] = useState([]);
 
   const itemsCtx = useItemContext();
@@ -16,8 +17,10 @@ const Home = ({toggleModal,openModal}) => {
   useEffect(() => {
     const getItems = async () => {
       try {
-        const res=await getDocs(collection(fireStore,'Products'));
-        const data2 = res.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+        const q = query(collection(fireStore, 'Products'), orderBy('createdAt', 'desc'));
+        const res = await getDocs(q);
+
+        const data2 = res.docs.map(doc => ({ ...doc.data(), id: doc.id }));
 
         const response = await fetch("https://fakestoreapi.com/products");
         const data = await response.json();
@@ -29,8 +32,8 @@ const Home = ({toggleModal,openModal}) => {
           price: Math.floor(item.price * 83),
           image: item.image
         }));
-     const combinedData = [...data2,...formattedData ]
-      
+        const combinedData = [...data2, ...formattedData]
+
         itemsCtx?.setItems(combinedData);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -38,7 +41,7 @@ const Home = ({toggleModal,openModal}) => {
     };
 
     getItems();
-  }, [addedItems]); 
+  }, [addedItems]);
 
   return (
     <div>
@@ -47,6 +50,7 @@ const Home = ({toggleModal,openModal}) => {
       <div className="pt-20">
         <Card items={itemsCtx.items} />
       </div>
+      <Footer />
     </div>
   );
 };
