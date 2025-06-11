@@ -7,6 +7,7 @@ import { ProductContext } from '../Context/productContext';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer'
 import { serverTimestamp } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 const Sell = ({ setItems ,toggleModal}) => {
   const { setProductData } = useContext(ProductContext);
@@ -20,6 +21,8 @@ const Sell = ({ setItems ,toggleModal}) => {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
+  
+
     if (file) {
       try {
         const imageUrl = await uploadImageToCloudinary(file);
@@ -32,7 +35,13 @@ const Sell = ({ setItems ,toggleModal}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const auth = getAuth();
+        const user = auth.currentUser;
 
+         if (!user) {
+    alert('Please login to post your ad.');
+    return;
+  }
     if (!selectedImage || !productName || !productDescription || !productPrice) {
       alert('Please fill all the fields');
       return;
