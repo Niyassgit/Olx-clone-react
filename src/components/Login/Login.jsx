@@ -4,25 +4,24 @@ import phone from '../../assets/phone.png';
 import google from '../../assets/google.png';
 import love from "../../assets/love.png";
 import avatar from "../../assets/avatar.png";
-import close from '../../assets/close.svg'
+import close from '../../assets/close.svg';
 import { signInWithPopup } from 'firebase/auth';
-import {auth,provider} from '../Firebase/Firebase'
-
+import { auth, provider } from '../Firebase/Firebase';
 
 const Login = ({ status, toggleModal }) => {
   if (!status) return null;
-  
-  const handleClick=async()=>{
+
+  const handleClick = async () => {
     try {
       console.log('clicked');
-     const result= await signInWithPopup(auth,provider);
+      const result = await signInWithPopup(auth, provider);
       toggleModal();
-      console.log("User",result.user);
-
+      console.log("User", result.user);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }
+  };
+
   const slides = [
     {
       image: guitar,
@@ -43,11 +42,10 @@ const Login = ({ status, toggleModal }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [slides.length])
+  }, [slides.length]);
 
   return (
     <div
@@ -57,20 +55,16 @@ const Login = ({ status, toggleModal }) => {
       aria-modal="true"
       onClick={toggleModal}
     >
-
       <div className="fixed inset-0 bg-zinc-400 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-
 
       <div className="fixed inset-0 z-50 w-screen overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-
           <div
             className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all"
             style={{ width: "400px", height: "600px" }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="bg-white px-6 pt-5 pb-6 sm:p-6 sm:pb-4">
-
               <div className="flex justify-end">
                 <img
                   src={close}
@@ -80,18 +74,20 @@ const Login = ({ status, toggleModal }) => {
                 />
               </div>
 
+              <div className="text-center">
+                {/* Slide content with fade effect */}
+                <div key={currentSlide} className="animate-fade-in">
+                  <img
+                    src={slides[currentSlide].image}
+                    alt="Slide"
+                    className="w-24 h-24 mx-auto"
+                  />
+                  <p className="text-base font-medium mt-5">
+                    {slides[currentSlide].text}
+                  </p>
+                </div>
 
-              <div className="text-center transition-all duration-500 ease-in-out">
-                <img
-                  src={slides[currentSlide].image}
-                  alt="Slide"
-                  className="w-24 h-24 mx-auto"
-                />
-                <p className="text-base font-medium mt-5">
-                  {slides[currentSlide].text}
-                </p>
-
-             
+                {/* Slide indicators */}
                 <div className="flex justify-center mt-4 gap-2">
                   {slides.map((_, index) => (
                     <button
@@ -110,16 +106,18 @@ const Login = ({ status, toggleModal }) => {
                   <h1 className="text-sm font-bold">Login with Phone Number</h1>
                 </div>
 
-                <div className="flex items-center gap-20 mt-4 border rounded border-gray-400 h-12 cursor-pointer hover:border-blue-600 hover:bg-blue-50">
+                <div
+                  className="flex items-center gap-20 mt-4 border rounded border-gray-400 h-12 cursor-pointer hover:border-blue-600 hover:bg-blue-50"
+                  onClick={handleClick}
+                >
                   <img src={google} alt="Google Icon" className="w-5 h-5 ml-3" />
-                  <h1 className="text-sm font-medium" onClick={handleClick}>Continue with Google</h1>
+                  <h1 className="text-sm font-medium">Continue with Google</h1>
                 </div>
 
                 <h1 className="text-center mt-4 font-semibold">OR</h1>
                 <h1 className="text-center mt-4 font-bold underline cursor-pointer">
                   Login with Email
                 </h1>
-
 
                 <h1 className="text-center mt-20 text-xs">
                   All your personal details are safe with us.
@@ -134,7 +132,7 @@ const Login = ({ status, toggleModal }) => {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
